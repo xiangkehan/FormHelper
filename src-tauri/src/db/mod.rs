@@ -1,7 +1,8 @@
-use rusqlite::{Connection, Result};
+use rusqlite::{Connection, Result, params};
+use serde::Serialize;
 
 // 人员结构体
-#[derive(Debug)]
+#[derive(Debug, Serialize, Clone)]
 pub struct Person {
     pub id: i32,
     pub name: String,
@@ -10,7 +11,7 @@ pub struct Person {
 }
 
 // 文件记录结构体
-#[derive(Debug)]
+#[derive(Debug, Serialize, Clone)]
 pub struct FileRecord {
     pub id: i32,
     pub person_id: Option<i32>,
@@ -21,7 +22,7 @@ pub struct FileRecord {
 }
 
 // 表格记录结构体
-#[derive(Debug)]
+#[derive(Debug, Serialize, Clone)]
 pub struct TableRecord {
     pub id: i32,
     pub file_id: i32,
