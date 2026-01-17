@@ -27,4 +27,11 @@ app.use(router)
 app.use(i18n)
 app.use(naive)
 
+// 预加载数据
+import { usePersonStore } from '@/stores/personStore'
+import { useFileStore } from '@/stores/fileStore'
+
+usePersonStore().fetchPersons()
+useFileStore().fetchFiles()
+
 app.mount('#app')

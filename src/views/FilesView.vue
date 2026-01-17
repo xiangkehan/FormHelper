@@ -36,9 +36,10 @@
       <!-- 文件列表 -->
       <n-data-table
         :columns="columns"
-        :data="files"
+        :data="fileList"
         :bordered="false"
         :pagination="{ pageSize: 10 }"
+        :loading="loading"
         style="margin-top: 24px"
       />
     </n-card>
@@ -46,72 +47,67 @@
 </template>
 
 <script setup lang="ts">
-import { ref, h } from 'vue'
+import { ref, computed, onMounted, h } from 'vue'
 import { NButton, NIcon, NTag, useMessage, type UploadFileInfo } from 'naive-ui'
 import { CloudArrowUp20Regular, DocumentBulletList24Regular, Eye20Regular, Delete20Regular } from '@vicons/fluent'
+import { open } from '@tauri-apps/api/dialog'
+import { useFileStore } from '@/stores/fileStore'
+import { usePersonStore } from '@/stores/personStore'
 
+// 文件记录数据结构（与后端一致）
 interface FileRecord {
   id: number
-  fileName: string
-  fileType: string
-  personName: string | null
-  status: 'pending' | 'processing' | 'success' | 'error'
-  createdAt: string
+  person_id: number | null
+  file_name: string
+  file_path: string
+  file_type: string
+  created_at: string
 }
 
 const message = useMessage()
-const files = ref<FileRecord[]>([
-  {
-    id: 1,
-    fileName: '员工信息表.pdf',
-    fileType: 'PDF',
-    personName: '张三',
-    status: 'success',
-    createdAt: '2024-01-15 10:30'
-  },
-  {
-    id: 2,
-    fileName: '成绩单.png',
-    fileType: 'Image',
-    personName: null,
-    status: 'pending',
-    createdAt: '2024-01-16 14:20'
-  }
-])
+const fileStore = useFileStore()
+const personStore = usePersonStore()
 
+// 从 store 获取数据
+const files = computed(() => fileStore.files)
+const loading = computed(() => fileStore.loading)
+const persons = computed(() => personStore.persons)
+
+// 文件列表（添加人员名称）
+const fileList = computed(() => {
+  return files.value.map(file => ({
+    ...file,
+    personName: file.person_id
+      ? persons.value.find(p => p.id === file.person_id)?.name || '-'
+      : '-'
+  }))
+})
+
+// 表格列配置
 const columns = [
   {
     title: '文件名',
-    key: 'fileName'
+    key: 'file_name'
   },
   {
     title: '文件类型',
-    key: 'fileType',
-    render(row: FileRecord) {
+    key: 'file_type',
+    render(row: FileRecord & { personName: string }) {
       return h(NTag, {
-        type: row.fileType === 'PDF' ? 'error' : row.fileType === 'Image' ? 'success' : 'warning'
-      }, { default: () => row.fileType })
+        type: getFileTypeTag(row.file_type)
+      }, { default: () => row.file_type })
     }
   },
   {
     title: '关联人员',
     key: 'personName',
-    render(row: FileRecord) {
+    render(row: FileRecord & { personName: string }) {
       return row.personName || '-'
     }
   },
   {
-    title: '状态',
-    key: 'status',
-    render(row: FileRecord) {
-      const type = row.status === 'success' ? 'success' : row.status === 'error' ? 'error' : 'warning'
-      const text = row.status === 'success' ? '已识别' : row.status === 'processing' ? '处理中' : row.status === 'error' ? '失败' : '待处理'
-      return h(NTag, { type }, { default: () => text })
-    }
-  },
-  {
     title: '创建时间',
-    key: 'createdAt'
+    key: 'created_at'
   },
   {
     title: '操作',
@@ -121,7 +117,6 @@ const columns = [
         h(NButton, {
           size: 'small',
           quaternary: true,
-          disabled: row.status !== 'success',
           onClick: () => handleView(row)
         }, {
           icon: () => h(NIcon, null, { default: () => h(Eye20Regular) })
@@ -139,21 +134,89 @@ const columns = [
   }
 ]
 
-const handleUpload = () => {
-  message.info('点击上传功能待实现')
+// 页面加载时获取数据
+onMounted(async () => {
+  await Promise.all([
+    fileStore.fetchFiles(),
+    personStore.fetchPersons()
+  ])
+})
+
+// 点击上传 - 打开文件选择对话框
+const handleUpload = async () => {
+  try {
+    const selected = await open({
+      multiple: true,
+      filters: [
+        {
+          name: 'Documents',
+          extensions: ['pdf', 'doc', 'docx', 'xls', 'xlsx', 'png', 'jpg', 'jpeg'],
+        },
+      ],
+    })
+
+    if (selected && Array.isArray(selected)) {
+      for (const filePath of selected) {
+        const fileName = filePath.split(/[/\\]/).pop() || ''
+        const ext = fileName.split('.').pop()?.toLowerCase() || ''
+        const fileType = getFileType(ext)
+        await fileStore.addFile(null, fileName, filePath, fileType)
+      }
+      message.success(`成功添加 ${selected.length} 个文件`)
+    }
+  } catch (e) {
+    message.error('选择文件失败')
+    console.error(e)
+  }
 }
 
+// 拖拽处理
 const handleFileChange = (options: { file: UploadFileInfo }) => {
-  message.info(`已选择文件: ${options.file.name}`)
+  const file = options.file
+  if (file.file) {
+    message.info(`已选择文件: ${file.name}`)
+  }
 }
 
+// 查看文件
 const handleView = (row: FileRecord) => {
-  message.info(`查看文件: ${row.fileName}`)
+  message.info(`查看文件: ${row.file_name}`)
 }
 
-const handleDelete = (id: number) => {
-  files.value = files.value.filter(f => f.id !== id)
-  message.success('删除成功')
+// 获取文件类型标签颜色
+const getFileTypeTag = (type: string): 'default' | 'success' | 'warning' | 'error' => {
+  const types: Record<string, 'default' | 'success' | 'warning' | 'error'> = {
+    PDF: 'error',
+    Image: 'success',
+    Word: 'warning',
+    Excel: 'info'
+  }
+  return types[type] || 'default'
+}
+
+// 根据扩展名获取文件类型
+const getFileType = (ext: string): string => {
+  const types: Record<string, string> = {
+    pdf: 'PDF',
+    doc: 'Word',
+    docx: 'Word',
+    xls: 'Excel',
+    xlsx: 'Excel',
+    png: 'Image',
+    jpg: 'Image',
+    jpeg: 'Image',
+  }
+  return types[ext] || 'Unknown'
+}
+
+// 删除文件
+const handleDelete = async (id: number) => {
+  try {
+    await fileStore.deleteFile(id)
+    message.success('删除成功')
+  } catch {
+    message.error('删除失败')
+  }
 }
 </script>
 

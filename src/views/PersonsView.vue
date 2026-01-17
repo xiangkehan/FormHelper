@@ -25,6 +25,7 @@
         :data="filteredPersons"
         :bordered="false"
         :pagination="{ pageSize: 10 }"
+        :loading="loading"
       />
     </n-card>
 
@@ -44,17 +45,22 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, h } from 'vue'
+import { ref, computed, onMounted, h } from 'vue'
 import { NButton, NIcon, NTag, useMessage } from 'naive-ui'
 import { Add20Regular, Edit20Regular, Trash20Regular } from '@vicons/fluent'
+import { usePersonStore } from '@/stores/personStore'
 
+// 人员数据结构（与后端一致）
 interface Person {
   id: number
   name: string
-  createdAt: string
+  created_at: string
+  updated_at: string
 }
 
 const message = useMessage()
+const personStore = usePersonStore()
+
 const searchKeyword = ref('')
 const showAddModal = ref(false)
 const isEditing = ref(false)
@@ -64,12 +70,11 @@ const formData = ref({
   name: ''
 })
 
-// 模拟人员数据
-const persons = ref<Person[]>([
-  { id: 1, name: '张三', createdAt: '2024-01-15 10:30' },
-  { id: 2, name: '李四', createdAt: '2024-01-16 14:20' }
-])
+// 从 store 获取数据
+const persons = computed(() => personStore.persons)
+const loading = computed(() => personStore.loading)
 
+// 过滤人员
 const filteredPersons = computed(() => {
   if (!searchKeyword.value) return persons.value
   return persons.value.filter(p =>
@@ -77,6 +82,7 @@ const filteredPersons = computed(() => {
   )
 })
 
+// 表格列配置
 const columns = [
   {
     title: 'ID',
@@ -89,7 +95,7 @@ const columns = [
   },
   {
     title: '创建时间',
-    key: 'createdAt'
+    key: 'created_at'
   },
   {
     title: '操作',
@@ -116,6 +122,12 @@ const columns = [
   }
 ]
 
+// 页面加载时获取数据
+onMounted(() => {
+  personStore.fetchPersons()
+})
+
+// 编辑人员
 const handleEdit = (row: Person) => {
   isEditing.value = true
   editingId.value = row.id
@@ -123,35 +135,37 @@ const handleEdit = (row: Person) => {
   showAddModal.value = true
 }
 
-const handleDelete = (id: number) => {
-  persons.value = persons.value.filter(p => p.id !== id)
-  message.success('删除成功')
+// 删除人员
+const handleDelete = async (id: number) => {
+  try {
+    await personStore.deletePerson(id)
+    message.success('删除成功')
+  } catch {
+    message.error('删除失败')
+  }
 }
 
-const handleSave = () => {
+// 保存人员
+const handleSave = async () => {
   if (!formData.value.name) {
     message.error('请输入姓名')
     return
   }
 
-  if (isEditing.value && editingId.value) {
-    const index = persons.value.findIndex(p => p.id === editingId.value)
-    if (index !== -1) {
-      persons.value[index].name = formData.value.name
+  try {
+    if (isEditing.value && editingId.value) {
+      await personStore.updatePerson(editingId.value, formData.value.name)
+    } else {
+      await personStore.addPerson(formData.value.name)
     }
-  } else {
-    persons.value.push({
-      id: Date.now(),
-      name: formData.value.name,
-      createdAt: new Date().toLocaleString('zh-CN')
-    })
+    showAddModal.value = false
+    formData.value.name = ''
+    isEditing.value = false
+    editingId.value = null
+    message.success('保存成功')
+  } catch {
+    message.error('保存失败')
   }
-
-  showAddModal.value = false
-  formData.value.name = ''
-  isEditing.value = false
-  editingId.value = null
-  message.success('保存成功')
 }
 </script>
 

@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
+// 应用设置 Store
 export const useAppStore = defineStore('app', () => {
   const isDark = ref(false)
   const language = ref(localStorage.getItem('language') || 'zh-CN')
