@@ -1,0 +1,75 @@
+{
+  "project": "FormHelper",
+  "lastUpdated": "2026-01-18T00:35:00+08:00",
+  "phases": {
+    "phase1": {
+      "name": "Agent 1: 完善 Tauri 命令",
+      "status": "pending",
+      "agent": "Agent 1",
+      "dependencies": [],
+      "startTime": null,
+      "endTime": null,
+      "tasks": {
+        "commands_person_rs": { "status": "pending", "description": "人员 CRUD 命令" },
+        "commands_file_rs": { "status": "pending", "description": "文件 CRUD 命令" },
+        "commands_mod_rs": { "status": "pending", "description": "命令模块入口" },
+        "main_rs_update": { "status": "pending", "description": "更新 main.rs 注册命令" },
+        "build_success": { "status": "pending", "description": "项目编译成功" }
+      }
+    },
+    "phase2": {
+      "name": "Agent 2: 前后端对接",
+      "status": "pending",
+      "agent": "Agent 2",
+      "dependencies": ["phase1"],
+      "startTime": null,
+      "endTime": null,
+      "tasks": {
+        "personStore_ts": { "status": "pending", "description": "人员状态管理" },
+        "fileStore_ts": { "status": "pending", "description": "文件状态管理" },
+        "PersonsView_vue": { "status": "pending", "description": "人员视图对接" },
+        "FilesView_vue": { "status": "pending", "description": "文件视图对接" },
+        "HomeView_vue": { "status": "pending", "description": "首页数据对接" },
+        "api_working": { "status": "pending", "description": "前后端 API 正常" }
+      }
+    },
+    "phase3_parallel": {
+      "name": "Agent 3 & 4: OCR 与表格识别（并行）",
+      "status": "pending",
+      "parallel": true,
+      "agents": ["Agent 3", "Agent 4"],
+      "dependencies": ["phase1", "phase2"],
+      "startTime": null,
+      "endTime": null,
+      "agent3": {
+        "name": "Agent 3: OCR 集成",
+        "tasks": {
+          "Cargo_deps": { "status": "pending", "description": "添加 Cargo 依赖" },
+          "ocr_mod_rs": { "status": "pending", "description": "OCR 模块" },
+          "pdf_rs": { "status": "pending", "description": "PDF 解析" },
+          "word_rs": { "status": "pending", "description": "Word 解析" },
+          "excel_rs": { "status": "pending", "description": "Excel 解析" },
+          "process_rs": { "status": "pending", "description": "文件处理命令" },
+          "ocr_working": { "status": "pending", "description": "OCR 功能可用" }
+        }
+      },
+      "agent4": {
+        "name": "Agent 4: 表格识别与数据管理",
+        "tasks": {
+          "record_rs": { "status": "pending", "description": "记录 CRUD 命令" },
+          "export_rs": { "status": "pending", "description": "导出命令" },
+          "db_functions": { "status": "pending", "description": "数据库查询函数" },
+          "TableEditor_vue": { "status": "pending", "description": "表格编辑组件" },
+          "DataView_vue": { "status": "pending", "description": "数据管理视图" },
+          "data_working": { "status": "pending", "description": "数据功能可用" }
+        }
+      }
+    }
+  },
+  "executionOrder": [
+    "phase1",
+    "phase2",
+    "phase3_parallel"
+  ],
+  "notes": []
+}

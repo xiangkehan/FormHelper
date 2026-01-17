@@ -42,5 +42,23 @@ coverage/
 # TypeScript
 *.tsbuildinfo
 
+# 包管理器锁文件
+pnpm-lock.yaml
+yarn.lock
+package-lock.json
+
 # claudecode
 .claude/
+
+# ============================================
+# Tauri/Rust 构建目录
+# ============================================
+src-tauri/target/
+Cargo.lock
+cargo-crev.lock
+
+# ============================================
+# Tauri 资源
+# ============================================
+src-tauri/src/resources/
+src-tauri/binaries/
