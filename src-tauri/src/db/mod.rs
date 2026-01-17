@@ -200,6 +200,11 @@ pub fn get_all_table_records(conn: &Connection) -> Result<Vec<TableRecord>> {
     Ok(records)
 }
 
+/// 获取文件的表格记录
+pub fn get_table_records(conn: &Connection, file_id: i32) -> Result<Vec<TableRecord>> {
+    get_table_records_by_file(conn, file_id)
+}
+
 /// 添加表格记录
 pub fn add_table_record(
     conn: &Connection,
