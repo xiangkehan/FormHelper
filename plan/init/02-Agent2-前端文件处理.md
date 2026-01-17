@@ -2,24 +2,24 @@
 
 ## 进度管理（开始前必须执行）
 
-```bash
+```batch
 cd progress
-python progress_manager.py check phase2
-# 确认依赖满足后再继续
-python progress_manager.py start phase2
+progress.bat check phase2
+REM 确认依赖满足后再继续
+progress.bat start phase2
 ```
 
 ### 任务对照表
 
 | 完成后执行 | 任务 |
 |-----------|------|
-| `python progress_manager.py task phase2 personStore_ts` | 创建 personStore.ts |
-| `python progress_manager.py task phase2 fileStore_ts` | 创建 fileStore.ts |
-| `python progress_manager.py task phase2 PersonsView_vue` | PersonsView 对接 |
-| `python progress_manager.py task phase2 FilesView_vue` | FilesView 对接 |
-| `python progress_manager.py task phase2 HomeView_vue` | HomeView 对接 |
-| `python progress_manager.py task phase2 api_working` | API 测试通过 |
-| `python progress_manager.py complete phase2` | 完成阶段2 |
+| `progress.bat task phase2 personStore_ts` | 创建 personStore.ts |
+| `progress.bat task phase2 fileStore_ts` | 创建 fileStore.ts |
+| `progress.bat task phase2 PersonsView_vue` | PersonsView 对接 |
+| `progress.bat task phase2 FilesView_vue` | FilesView 对接 |
+| `progress.bat task phase2 HomeView_vue` | HomeView 对接 |
+| `progress.bat task phase2 api_working` | API 测试通过 |
+| `progress.bat complete phase2` | 完成阶段2 |
 
 ---
 

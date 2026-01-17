@@ -4,28 +4,27 @@
 
 ```
 progress/
-├── progress.json        # 进度数据（JSON格式）
-├── progress_manager.py  # 进度管理工具（Python）
-├── progress.bat         # Windows 批处理版本
-└── README.md            # 本文件
+├── progress.json   # 进度数据（JSON格式）
+├── progress.bat    # Windows 批处理版本
+└── README.md       # 本文件
 ```
 
 ## 使用方法
 
-### 查看当前进度
+所有命令在 `progress/` 目录下执行：
 
-**Python:**
-```bash
+```batch
 cd progress
-python progress_manager.py read
 ```
 
-**Windows:**
+### 查看当前进度
+
 ```batch
 progress.bat read
 ```
 
 **输出示例:**
+
 ```
 
 ============================================================
@@ -36,44 +35,44 @@ FormHelper 项目进度
 ⏳ Agent 1: 完善 Tauri 命令
    状态: pending
    依赖满足
-   任务: 0/5
+   任务: 0/6
 
 ⏳ Agent 2: 前后端对接
    状态: pending
    ✗ 依赖未满足 (phase1 未完成)
-   任务: 0/6
+   任务: 0/7
 
 ...
 ```
 
 ### 开始某阶段
 
-```bash
-python progress_manager.py start phase1
+```batch
+progress.bat start phase1
 ```
 
 ### 完成某阶段
 
-```bash
-python progress_manager.py complete phase1
+```batch
+progress.bat complete phase1
 ```
 
 ### 完成单个任务
 
-```bash
-python progress_manager.py task phase1 commands_person_rs
+```batch
+progress.bat task phase1 commands_person_rs
 ```
 
 ### 检查依赖
 
-```bash
-python progress_manager.py check phase2
+```batch
+progress.bat check phase2
 ```
 
 ### 添加备注
 
-```bash
-python progress_manager.py note "发现一个 bug，需要修复"
+```batch
+progress.bat note 发现一个 bug
 ```
 
 ## 阶段顺序
@@ -84,7 +83,7 @@ python progress_manager.py note "发现一个 bug，需要修复"
 
 ## Agent 执行规则
 
-1. **开始前必须检查依赖** - 使用 `check` 命令
-2. **开始时更新状态** - 使用 `start` 命令
-3. **完成后更新状态** - 使用 `complete` 命令
-4. **重要发现添加备注** - 使用 `note` 命令
+1. **开始前必须检查依赖** - 使用 `progress.bat check <阶段>`
+2. **开始时更新状态** - 使用 `progress.bat start <阶段>`
+3. **完成后更新状态** - 使用 `progress.bat complete <阶段>`
+4. **重要发现添加备注** - 使用 `progress.bat note "<消息>"`

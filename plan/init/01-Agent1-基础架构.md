@@ -2,23 +2,23 @@
 
 ## 进度管理（开始前必须执行）
 
-```bash
+```batch
 cd progress
-python progress_manager.py check phase1
-# 确认依赖满足后再继续
-python progress_manager.py start phase1
+progress.bat check phase1
+REM 确认依赖满足后再继续
+progress.bat start phase1
 ```
 
 ### 任务对照表
 
 | 完成后执行 | 任务 |
 |-----------|------|
-| `python progress_manager.py task phase1 commands_person_rs` | 创建 person.rs |
-| `python progress_manager.py task phase1 commands_file_rs` | 创建 file.rs |
-| `python progress_manager.py task phase1 commands_mod_rs` | 创建 mod.rs |
-| `python progress_manager.py task phase1 main_rs_update` | 更新 main.rs |
-| `python progress_manager.py task phase1 build_success` | 编译成功 |
-| `python progress_manager.py complete phase1` | 完成阶段1 |
+| `progress.bat task phase1 commands_person_rs` | 创建 person.rs |
+| `progress.bat task phase1 commands_file_rs` | 创建 file.rs |
+| `progress.bat task phase1 commands_mod_rs` | 创建 mod.rs |
+| `progress.bat task phase1 main_rs_update` | 更新 main.rs |
+| `progress.bat task phase1 build_success` | 编译成功 |
+| `progress.bat complete phase1` | 完成阶段1 |
 
 ---
 

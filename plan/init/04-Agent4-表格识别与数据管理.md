@@ -2,23 +2,23 @@
 
 ## 进度管理（开始前必须执行）
 
-```bash
+```batch
 cd progress
-python progress_manager.py check phase3_parallel
-# 确认依赖满足后再继续
-python progress_manager.py start phase3_parallel
+progress.bat check phase3_parallel
+REM 确认依赖满足后再继续
+progress.bat start phase3_parallel
 ```
 
 ### 任务对照表（Agent 4）
 
 | 完成后执行 | 任务 |
 |-----------|------|
-| `python progress_manager.py task phase3_parallel record_rs` | 记录 CRUD 命令 |
-| `python progress_manager.py task phase3_parallel export_rs` | 导出命令 |
-| `python progress_manager.py task phase3_parallel db_functions` | 数据库查询函数 |
-| `python progress_manager.py task phase3_parallel TableEditor_vue` | 表格编辑组件 |
-| `python progress_manager.py task phase3_parallel DataView_vue` | 数据管理视图 |
-| `python progress_manager.py task phase3_parallel data_working` | 数据功能可用 |
+| `progress.bat task phase3_parallel record_rs` | 记录 CRUD 命令 |
+| `progress.bat task phase3_parallel export_rs` | 导出命令 |
+| `progress.bat task phase3_parallel db_functions` | 数据库查询函数 |
+| `progress.bat task phase3_parallel TableEditor_vue` | 表格编辑组件 |
+| `progress.bat task phase3_parallel DataView_vue` | 数据管理视图 |
+| `progress.bat task phase3_parallel data_working` | 数据功能可用 |
 
 ---
 

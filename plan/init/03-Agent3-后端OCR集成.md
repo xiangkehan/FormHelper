@@ -2,24 +2,24 @@
 
 ## 进度管理（开始前必须执行）
 
-```bash
+```batch
 cd progress
-python progress_manager.py check phase3_parallel
-# 确认依赖满足后再继续
-python progress_manager.py start phase3_parallel
+progress.bat check phase3_parallel
+REM 确认依赖满足后再继续
+progress.bat start phase3_parallel
 ```
 
 ### 任务对照表（Agent 3）
 
 | 完成后执行 | 任务 |
 |-----------|------|
-| `python progress_manager.py task phase3_parallel Cargo_deps` | 添加 Cargo 依赖 |
-| `python progress_manager.py task phase3_parallel ocr_mod_rs` | OCR 模块 |
-| `python progress_manager.py task phase3_parallel pdf_rs` | PDF 解析 |
-| `python progress_manager.py task phase3_parallel word_rs` | Word 解析 |
-| `python progress_manager.py task phase3_parallel excel_rs` | Excel 解析 |
-| `python progress_manager.py task phase3_parallel process_rs` | 文件处理命令 |
-| `python progress_manager.py task phase3_parallel ocr_working` | OCR 功能可用 |
+| `progress.bat task phase3_parallel Cargo_deps` | 添加 Cargo 依赖 |
+| `progress.bat task phase3_parallel ocr_mod_rs` | OCR 模块 |
+| `progress.bat task phase3_parallel pdf_rs` | PDF 解析 |
+| `progress.bat task phase3_parallel word_rs` | Word 解析 |
+| `progress.bat task phase3_parallel excel_rs` | Excel 解析 |
+| `progress.bat task phase3_parallel process_rs` | 文件处理命令 |
+| `progress.bat task phase3_parallel ocr_working` | OCR 功能可用 |
 
 ---
 
