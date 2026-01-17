@@ -146,3 +146,85 @@ pub fn delete_file(conn: &Connection, id: i32) -> Result<()> {
     conn.execute("DELETE FROM files WHERE id = ?1", [&id.to_string()])?;
     Ok(())
 }
+
+// 表格记录相关操作
+
+/// 获取指定文件的所有表格记录
+pub fn get_table_records_by_file(conn: &Connection, file_id: i32) -> Result<Vec<TableRecord>> {
+    let mut stmt = conn.prepare(
+        "SELECT id, file_id, person_id, content, created_at FROM table_records WHERE file_id = ?1 ORDER BY created_at DESC",
+    )?;
+    let records = stmt.query_map([file_id], |row| {
+        Ok(TableRecord {
+            id: row.get(0)?,
+            file_id: row.get(1)?,
+            person_id: row.get(2)?,
+            content: row.get(3)?,
+            created_at: row.get(4)?,
+        })
+    })?.collect::<Result<Vec<TableRecord>>>()?;
+    Ok(records)
+}
+
+/// 获取指定人员的所有表格记录
+pub fn get_table_records_by_person(conn: &Connection, person_id: i32) -> Result<Vec<TableRecord>> {
+    let mut stmt = conn.prepare(
+        "SELECT id, file_id, person_id, content, created_at FROM table_records WHERE person_id = ?1 ORDER BY created_at DESC",
+    )?;
+    let records = stmt.query_map([person_id], |row| {
+        Ok(TableRecord {
+            id: row.get(0)?,
+            file_id: row.get(1)?,
+            person_id: row.get(2)?,
+            content: row.get(3)?,
+            created_at: row.get(4)?,
+        })
+    })?.collect::<Result<Vec<TableRecord>>>()?;
+    Ok(records)
+}
+
+/// 获取所有表格记录
+pub fn get_all_table_records(conn: &Connection) -> Result<Vec<TableRecord>> {
+    let mut stmt = conn.prepare(
+        "SELECT id, file_id, person_id, content, created_at FROM table_records ORDER BY created_at DESC",
+    )?;
+    let records = stmt.query_map([], |row| {
+        Ok(TableRecord {
+            id: row.get(0)?,
+            file_id: row.get(1)?,
+            person_id: row.get(2)?,
+            content: row.get(3)?,
+            created_at: row.get(4)?,
+        })
+    })?.collect::<Result<Vec<TableRecord>>>()?;
+    Ok(records)
+}
+
+/// 添加表格记录
+pub fn add_table_record(
+    conn: &Connection,
+    file_id: i32,
+    person_id: Option<i32>,
+    content: &str,
+) -> Result<i32> {
+    let mut stmt = conn.prepare(
+        "INSERT INTO table_records (file_id, person_id, content) VALUES (?1, ?2, ?3)",
+    )?;
+    stmt.execute(params![file_id, person_id, content])?;
+    Ok(conn.last_insert_rowid() as i32)
+}
+
+/// 更新表格记录内容
+pub fn update_table_record(conn: &Connection, id: i32, content: &str) -> Result<()> {
+    conn.execute(
+        "UPDATE table_records SET content = ?1 WHERE id = ?2",
+        [content, &id.to_string()],
+    )?;
+    Ok(())
+}
+
+/// 删除表格记录
+pub fn delete_table_record(conn: &Connection, id: i32) -> Result<()> {
+    conn.execute("DELETE FROM table_records WHERE id = ?1", [&id.to_string()])?;
+    Ok(())
+}

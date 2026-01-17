@@ -7,6 +7,7 @@
     "home": "首页",
     "persons": "人员管理",
     "files": "文件处理",
+    "data": "数据管理",
     "settings": "设置"
   },
   "home": {
@@ -40,6 +41,15 @@
     "person": "关联人员",
     "noFiles": "暂无文件",
     "recognize": "识别表格"
+  },
+  "data": {
+    "title": "数据管理",
+    "selectPerson": "选择人员",
+    "exportExcel": "导出 Excel",
+    "exportCsv": "导出 CSV",
+    "view": "查看",
+    "export": "导出",
+    "noData": "暂无数据"
   },
   "settings": {
     "title": "设置",
