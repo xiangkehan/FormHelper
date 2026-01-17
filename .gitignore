@@ -1,0 +1,46 @@
+# VSCode 扩展项目 .gitignore
+
+# 依赖目录
+node_modules/
+
+# 构建输出
+dist/
+out/
+
+# VSCode 工作区
+*.code-workspace
+
+# 用户设置
+.vscode/settings.json
+.vscode/tasks.json
+.vscode/launch.json
+.vscode/extensions.json
+
+# 操作系统文件
+.DS_Store
+Thumbs.db
+
+# 日志文件
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# 临时文件
+*.tmp
+*.temp
+
+# 测试覆盖
+coverage/
+
+# npm 缓存
+.npm
+
+# ESLint
+.eslintcache
+
+# TypeScript
+*.tsbuildinfo
+
+# claudecode
+.claude/

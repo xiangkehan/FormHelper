@@ -1,0 +1,69 @@
+{
+  "app": {
+    "title": "FormHelper",
+    "subtitle": "表格识别工具"
+  },
+  "nav": {
+    "home": "首页",
+    "persons": "人员管理",
+    "files": "文件处理",
+    "settings": "设置"
+  },
+  "home": {
+    "welcome": "欢迎使用 FormHelper",
+    "description": "快速识别 PDF、图片、Word、Excel 中的表格内容",
+    "quickStart": "开始使用",
+    "recentFiles": "最近处理的文件",
+    "noRecentFiles": "暂无最近文件"
+  },
+  "persons": {
+    "title": "人员管理",
+    "addPerson": "添加人员",
+    "searchPlaceholder": "搜索人员...",
+    "name": "姓名",
+    "createdAt": "创建时间",
+    "actions": "操作",
+    "edit": "编辑",
+    "delete": "删除",
+    "confirmDelete": "确定要删除此人员吗？",
+    "noPersons": "暂无人员数据"
+  },
+  "files": {
+    "title": "文件处理",
+    "upload": "上传文件",
+    "dragDrop": "拖拽文件到此处或点击上传",
+    "processing": "处理中...",
+    "success": "处理成功",
+    "error": "处理失败",
+    "fileType": "文件类型",
+    "fileName": "文件名",
+    "person": "关联人员",
+    "noFiles": "暂无文件",
+    "recognize": "识别表格"
+  },
+  "settings": {
+    "title": "设置",
+    "language": "语言",
+    "theme": "主题",
+    "themeLight": "浅色",
+    "themeDark": "深色",
+    "themeAuto": "跟随系统",
+    "ocrEngine": "OCR 引擎",
+    "ocrLocal": "本地引擎",
+    "ocrCloud": "云服务",
+    "save": "保存设置"
+  },
+  "common": {
+    "confirm": "确认",
+    "cancel": "取消",
+    "save": "保存",
+    "delete": "删除",
+    "edit": "编辑",
+    "add": "添加",
+    "search": "搜索",
+    "loading": "加载中...",
+    "noData": "暂无数据",
+    "success": "操作成功",
+    "error": "操作失败"
+  }
+}
